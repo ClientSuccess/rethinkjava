@@ -4,9 +4,9 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 import com.dkhenry.RethinkDB.errors.RqlDriverException;
-import com.rethinkdb.Ql2.Response;
+import com.dkhenry.RethinkDB.Response;
 
-public class RqlCursor implements Iterable<RqlObject> ,Iterator<RqlObject> {
+public class RqlCursor implements Iterable<RqlObject>, Iterator<RqlObject> {
 	
 	private RqlConnection _connection;
 	private Response _response; 
@@ -36,7 +36,7 @@ public class RqlCursor implements Iterable<RqlObject> ,Iterator<RqlObject> {
 	public boolean hasNext() {
 		if (_index < _response.getResponseCount()) {
 			return true;
-		} else if (_response.getType() == Response.ResponseType.SUCCESS_PARTIAL) {
+		} else if (_response.getType() == com.rethinkdb.Ql2.Response.ResponseType.SUCCESS_PARTIAL) {
 			try {
 				_response = _connection.get_more(_response.getToken());
 			} catch (RqlDriverException e) {
@@ -52,7 +52,7 @@ public class RqlCursor implements Iterable<RqlObject> ,Iterator<RqlObject> {
 	public RqlObject next() {
 		if( _index < _response.getResponseCount()) { 
 			return new RqlObject(_response.getResponse(_index++));
-		} else if( _response.getType() == Response.ResponseType.SUCCESS_PARTIAL){ 			
+		} else if( _response.getType() == com.rethinkdb.Ql2.Response.ResponseType.SUCCESS_PARTIAL){ 			
 			try {
 				_response = _connection.get_more(_response.getToken());
 				_index = 0;
