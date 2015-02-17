@@ -24,7 +24,7 @@ public class IntegrationTest {
 		RqlConnection r = RqlConnection.connect("localhost",28015);
 		RqlCursor cursor = r.run(r.db_create(database));
 		RqlObject obj = cursor.next();					
-		assert Double.valueOf(1.0).equals(obj.getAs("created")) : "Database was not created successfully ";
+		assert Double.valueOf(1.0).equals(obj.getAs("dbs_created")) : "Database was not created successfully ";
 		cursor = r.run(r.db_list());
 		obj = cursor.next();
 		boolean found = false;
@@ -37,7 +37,7 @@ public class IntegrationTest {
 		assert found == true : "Database was not able to be listed";
 		cursor = r.run(r.db_drop(database));
 		obj = cursor.next(); 
-		assert Double.valueOf(1.0).equals(obj.getAs("dropped")) : "Database was not dropped successfully ";
+		assert Double.valueOf(1.0).equals(obj.getAs("dbs_dropped")) : "Database was not dropped successfully ";
 		r.close();
 	}
 
@@ -49,7 +49,7 @@ public class IntegrationTest {
 		RqlConnection r = RqlConnection.connect("localhost",28015);
 		r.run(r.db_create(database));
 		RqlCursor cursor = r.run(r.db(database).table_create(table));
-		assert Double.valueOf(1.0).equals(cursor.next().getAs("created")) : "Table was not created successfully ";		
+		assert Double.valueOf(1.0).equals(cursor.next().getAs("tables_created")) : "Table was not created successfully ";		
 		cursor = r.run(r.db(database).table_list());
 		boolean found = false; 
 		for(Object o: cursor.next().getList()) { 
@@ -60,7 +60,7 @@ public class IntegrationTest {
 		}
 		assert found == true : "Table was not able to be listed";
 		cursor = r.run(r.db(database).table_drop(table));
-		assert Double.valueOf(1.0).equals(cursor.next().getAs("dropped")) : "Table was not dropped successfully ";		
+		assert Double.valueOf(1.0).equals(cursor.next().getAs("tables_dropped")) : "Table was not dropped successfully ";		
 		r.run(r.db_drop(database)); 
 		r.close();
 	}

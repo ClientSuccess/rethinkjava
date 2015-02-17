@@ -268,9 +268,6 @@ public class RqlConnection {
     }
 
 	public static void rethink_send(SocketChannel sc, byte[] data) throws IOException {
-	    String s = new String(data);
-	    System.out.println(s);
-
 		ByteBuffer buffer = ByteBuffer.wrap(data);
 
 		while(buffer.hasRemaining()) { 
