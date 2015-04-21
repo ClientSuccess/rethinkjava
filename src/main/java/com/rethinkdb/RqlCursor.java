@@ -4,7 +4,7 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 import com.rethinkdb.errors.RqlDriverException;
-import com.rethinkdb.Response;
+import com.rethinkdb.Ql2.Response;
 
 public class RqlCursor implements Iterable<RqlObject>, Iterator<RqlObject> {
 

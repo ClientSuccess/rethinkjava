@@ -12,7 +12,7 @@ import java.util.concurrent.atomic.AtomicLong;
 
 import com.rethinkdb.errors.RqlDriverException;
 import org.json.*;
-import com.rethinkdb.Response;
+import com.rethinkdb.Ql2.Response;
 import com.rethinkdb.Ql2;
 import com.rethinkdb.Ql2.Query;
 
