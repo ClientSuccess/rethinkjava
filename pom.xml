@@ -52,7 +52,7 @@
 				<version>0.3.2</version>
 				<configuration>
 					<checkStaleness>true</checkStaleness>
-					<protocExecutable>/usr/bin/protoc</protocExecutable>
+					<protocExecutable>/usr/local/bin/protoc</protocExecutable>
 				</configuration>
 				<executions>
 					<execution>
@@ -101,7 +101,7 @@
 					<repositoryOwner>dkhenry</repositoryOwner>    <!-- github username -->
 				</configuration>
 				<executions>
-					<!-- run site-maven-plugin's 'site' target as part of the build's normal 
+					<!-- run site-maven-plugin's 'site' target as part of the build's normal
 						'deploy' phase -->
 					<execution>
 						<goals>
@@ -119,7 +119,7 @@
 				</configuration>
 				<executions>
 					<execution>
-						<id>jacoco-initialize</id>						
+						<id>jacoco-initialize</id>
 						<goals>
 							<goal>prepare-agent</goal>
 						</goals>
