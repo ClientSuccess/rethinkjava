@@ -1,4 +1,4 @@
-package com.dkhenry.RethinkDB;
+package com.rethinkdb;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -7,8 +7,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import com.rethinkdb.errors.RqlDriverException;
 import org.json.*;
-import com.dkhenry.RethinkDB.errors.RqlDriverException;
 
 public class Datum {
 	/* Datum Constructors */
@@ -17,8 +17,8 @@ public class Datum {
         return JSONObject.NULL;
     }
 	/* We will specialize for all types defined in the protocol */
-    public static Object datum(Boolean b) {    	
-    	return b;
+    public static Object datum(Boolean b) {
+        return b;
     }
     public static Object datum(String s) {
         return s;
@@ -26,13 +26,13 @@ public class Datum {
     public static Object datum(Double d) {
     	return d;
     }
-    
+
     /* We want to cast all "Numbers" to Doubles */
     public static<T extends Number> Object datum(T n) {
     	return datum(n.doubleValue());
     }
 
-    /* For any type we haven't specialized we are going to cast to a string */ 
+    /* For any type we haven't specialized we are going to cast to a string */
     public static <T> Object datum(T t) {
         if( null == t ) {
             return datum();
@@ -40,15 +40,15 @@ public class Datum {
     		return datum((Boolean) t);
     	} else if( Number.class.isAssignableFrom(t.getClass()) ) {
     		return datum((Number) t);
-    	} else if( t instanceof List) { 
-    		return datum((List) t);
-    	} else if( t instanceof Map) {
+        } else if (t instanceof List) {
+            return datum((List) t);
+        } else if( t instanceof Map) {
     		return datum((Map) t);
     	} else {
     		return datum(t.toString());
     	}
     }
-    
+
     // The R Array
     public static <T> Object datum(List<T> a) {
     	JSONArray b = new JSONArray();
@@ -57,7 +57,7 @@ public class Datum {
     	}
     	return b;
     }
-    
+
     // This is the R_OBJECT
     public static <K,V> Object datum(Map<K,V> h){
     	JSONObject b = new JSONObject();
@@ -80,9 +80,9 @@ public class Datum {
     }
 
     public static Object deconstruct(JSONArray d) throws RqlDriverException {
-        ArrayList<Object> l = new ArrayList<Object>(); 
-		for(int i = 0; i < d.length(); ++i) {
-			l.add(deconstruct(d.get(i)));
+        ArrayList<Object> l = new ArrayList<Object>();
+        for (int i = 0; i < d.length(); ++i) {
+            l.add(deconstruct(d.get(i)));
 		}
 		return l;
     }

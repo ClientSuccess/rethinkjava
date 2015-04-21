@@ -1,7 +1,8 @@
 package com.dkhenry;
 
 import com.dkhenry.RethinkDB.*;
-import com.dkhenry.RethinkDB.errors.RqlDriverException;
+import com.rethinkdb.*;
+import com.rethinkdb.errors.RqlDriverException;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 import org.testng.AssertJUnit;

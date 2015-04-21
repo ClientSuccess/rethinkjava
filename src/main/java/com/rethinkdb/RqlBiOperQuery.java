@@ -1,4 +1,4 @@
-package com.dkhenry.RethinkDB;
+package com.rethinkdb;
 
 import com.rethinkdb.Ql2.Term.TermType;
 import com.rethinkdb.Ql2.Term;
@@ -65,7 +65,8 @@ public abstract class RqlBiOperQuery extends RqlQuery {
 		}
 	}
 	public static class Add extends RqlBiOperQuery {
-		public Add(Object ...args) { 
+
+		public Add(Object... args) {
 			construct(args);
 		}
 		@Override

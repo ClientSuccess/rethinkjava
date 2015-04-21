@@ -1,4 +1,4 @@
-package com.dkhenry.RethinkDB;
+package com.rethinkdb;
 
 import com.rethinkdb.Ql2.Term;
 import com.rethinkdb.Ql2.Term.TermType;
@@ -9,7 +9,7 @@ public abstract class RqlMethodQuery extends RqlQuery {
 			construct_with_optargs(args,1);
 		}
 		@Override
-		protected TermType tt() {			
+		protected TermType tt() {
 			return Term.TermType.INSERT;
 		}
 	}
@@ -18,7 +18,7 @@ public abstract class RqlMethodQuery extends RqlQuery {
 			construct_with_optargs(args,1);
 		}
 		@Override
-		protected TermType tt() {			
+		protected TermType tt() {
 			return Term.TermType.TABLE_CREATE;
 		}
 	}
@@ -27,7 +27,7 @@ public abstract class RqlMethodQuery extends RqlQuery {
 			construct(args);
 		}
 		@Override
-		protected TermType tt() {			
+		protected TermType tt() {
 			return Term.TermType.TABLE_DROP;
 		}
 	}
@@ -36,7 +36,7 @@ public abstract class RqlMethodQuery extends RqlQuery {
 			construct(args);
 		}
 		@Override
-		protected TermType tt() {			
+		protected TermType tt() {
 			return Term.TermType.TABLE_LIST;
 		}
 	}
@@ -45,7 +45,7 @@ public abstract class RqlMethodQuery extends RqlQuery {
 			construct(args);
 		}
 		@Override
-		protected TermType tt() {			
+		protected TermType tt() {
 			return Term.TermType.APPEND;
 		}
 	}
@@ -55,17 +55,17 @@ public abstract class RqlMethodQuery extends RqlQuery {
 			construct(args);
 		}
 		@Override
-		protected TermType tt() {			
+		protected TermType tt() {
 			return Term.TermType.PREPEND;
 		}
 	}
 
-	public static class Difference extends RqlMethodQuery { 
+	public static class Difference extends RqlMethodQuery {
 		public  Difference(Object ...args) {
 			construct(args);
 		}
 		@Override
-		protected TermType tt() {			
+		protected TermType tt() {
 			return Term.TermType.DIFFERENCE;
 		}
 	}
@@ -75,27 +75,28 @@ public abstract class RqlMethodQuery extends RqlQuery {
 			construct(args);
 		}
 		@Override
-		protected TermType tt() {			
+		protected TermType tt() {
 			return Term.TermType.SET_INSERT;
 		}
 	}
 
 	public static class SetUnion extends RqlMethodQuery {
 		public SetUnion(Object ...args) {
-			construct(args);		
+			construct(args);
 		}
 		@Override
-		protected TermType tt() {			
+		protected TermType tt() {
 			return Term.TermType.SET_UNION;
 		}
 	}
 
 	public static class SetIntersection extends RqlMethodQuery {
-		public SetIntersection(Object ...args) { 
+
+		public SetIntersection(Object... args) {
 			construct(args);
 		}
 		@Override
-		protected TermType tt() {			
+		protected TermType tt() {
 			return Term.TermType.SET_INTERSECTION;
 		}
 	}
@@ -104,7 +105,7 @@ public abstract class RqlMethodQuery extends RqlQuery {
 			construct(args);
 		}
 		@Override
-		protected TermType tt() {			
+		protected TermType tt() {
 			return Term.TermType.SET_DIFFERENCE;
 		}
 	}
@@ -114,7 +115,7 @@ public abstract class RqlMethodQuery extends RqlQuery {
 			construct(args);
 		}
 		@Override
-		protected TermType tt() {			
+		protected TermType tt() {
 			return Term.TermType.SKIP;
 		}
 	}
@@ -124,57 +125,60 @@ public abstract class RqlMethodQuery extends RqlQuery {
 			construct(args);
 		}
 		@Override
-		protected TermType tt() {			
+		protected TermType tt() {
 			return Term.TermType.LIMIT;
 		}
 	}
 
 	public static class Contains extends RqlMethodQuery {
-		public Contains(Object ...args) { 
+
+		public Contains(Object... args) {
 			construct(args);
 		}
 		@Override
-		protected TermType tt() {			
+		protected TermType tt() {
 			return Term.TermType.CONTAINS;
 		}
 	}
 
-	public static class HasFields extends RqlMethodQuery { 
+	public static class HasFields extends RqlMethodQuery {
 		public HasFields(Object ...args) {
 			construct(args);
 		}
 		@Override
-		protected TermType tt() {			
+		protected TermType tt() {
 			return Term.TermType.HAS_FIELDS;
 		}
 	}
 
 	public static class WithFields extends RqlMethodQuery {
 		public WithFields(Object ...args) {
-			construct(args); 
+			construct(args);
 		}
 		@Override
-		protected TermType tt() {			
+		protected TermType tt() {
 			return Term.TermType.WITH_FIELDS;
 		}
 	}
 
-	public static class Keys extends RqlMethodQuery { 
-		public Keys(Object ...args) { 
+	public static class Keys extends RqlMethodQuery {
+
+		public Keys(Object... args) {
 			construct(args);
 		}
 		@Override
-		protected TermType tt() {			
+		protected TermType tt() {
 			return Term.TermType.KEYS;
 		}
 	}
 
 	public static class Pluck extends RqlMethodQuery {
-		public Pluck(Object ...args) { 
+
+		public Pluck(Object... args) {
 			construct(args);
 		}
 		@Override
-		protected TermType tt() {			
+		protected TermType tt() {
 			return Term.TermType.PLUCK;
 		}
 	}
@@ -908,7 +912,7 @@ public abstract class RqlMethodQuery extends RqlQuery {
 		protected TermType tt() {
 			return Term.TermType.UNGROUP;
 		}
-	}	
+	}
 	public static class Sum extends RqlMethodQuery {
 		public  Sum(Object ...args) {
 			construct(args);
@@ -944,6 +948,6 @@ public abstract class RqlMethodQuery extends RqlQuery {
 		protected TermType tt() {
 			return Term.TermType.MAX;
 		}
-	}	
+	}
 }
 

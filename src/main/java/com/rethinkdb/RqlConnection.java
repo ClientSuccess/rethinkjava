@@ -1,4 +1,4 @@
-package com.dkhenry.RethinkDB;
+package com.rethinkdb;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -10,16 +10,17 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
 
+import com.rethinkdb.errors.RqlDriverException;
 import org.json.*;
-import com.dkhenry.RethinkDB.errors.RqlDriverException;
-import com.dkhenry.RethinkDB.Response;
+import com.rethinkdb.Response;
 import com.rethinkdb.Ql2;
 import com.rethinkdb.Ql2.Query;
 
 public class RqlConnection {
-	private SocketChannel _sc;    
+
+	private SocketChannel _sc;
 	private String _hostname;
-	private int _port; 
+	private int _port;
 	private boolean _connected;
 
     //! Flag to indicate if this is a secured connection
@@ -27,11 +28,11 @@ public class RqlConnection {
 
     //! The authorization key for this connection
     private String _authKey;
- 
-	//! A global counter for the request tokens; 
+
+	//! A global counter for the request tokens;
 	private static AtomicLong counter = new AtomicLong(0);
 
-	public RqlConnection() { 
+	public RqlConnection() {
 		_connected = false;
         _secured = false;
 	}
@@ -42,7 +43,7 @@ public class RqlConnection {
     }
     public void set_hostname2(String hostname, boolean reconnect) throws RqlDriverException {
 		String ohostname = _hostname;
-		_hostname = hostname; 
+		_hostname = hostname;
 		if(reconnect && _connected && hostname != ohostname) {
 			reconnect();
 		}
@@ -53,8 +54,8 @@ public class RqlConnection {
         set_port2(port,true);
     }
     public void set_port2(int port, boolean reconnect) throws RqlDriverException {
-		int oport = _port; 
-		_port = port; 
+		int oport = _port;
+		_port = port;
 		if(reconnect && _connected && oport != port) {
 			reconnect();
 		}
@@ -74,14 +75,14 @@ public class RqlConnection {
         }
     }
 
-	public void close() throws RqlDriverException { 
+	public void close() throws RqlDriverException {
 		if( _connected ) {
-			try { 
+			try {
 				_sc.close();
-			} catch (IOException ex) { 
-				throw new RqlDriverException(ex.getMessage());				
+			} catch (IOException ex) {
+				throw new RqlDriverException(ex.getMessage());
 			}
-			_connected = false; 
+			_connected = false;
 		}
 	}
     public RqlCursor run(RqlQuery query) throws RqlDriverException {
@@ -100,7 +101,7 @@ public class RqlConnection {
 
 		try {
 			send_raw(buffer.array());
-		} catch (IOException ex) { 
+		} catch (IOException ex) {
 			throw new RqlDriverException(ex.getMessage());
 		}
     }
@@ -120,7 +121,7 @@ public class RqlConnection {
         q.put(oa);
 
         sendQueryArray(q, nextToken());
-		Response rsp = get(); 
+		Response rsp = get();
 
 		// For this version we only support success :-(
 		switch(rsp.getType()) {
@@ -132,51 +133,51 @@ public class RqlConnection {
 		case COMPILE_ERROR:
 		case RUNTIME_ERROR:
 		default:
-			throw new RqlDriverException(rsp.toString());							
-		}							
+			throw new RqlDriverException(rsp.toString());
+		}
 	}
-	
+
 	public Response get() throws RqlDriverException {
 		try {
 			return recv_raw();
-		} catch (IOException ex) { 
+		} catch (IOException ex) {
 			throw new RqlDriverException(ex.getMessage());
 		}
 	}
-	
+
 	public Response get_more(long token) throws RqlDriverException {
-		// Send the [CONTINUE] query 
+		// Send the [CONTINUE] query
 		JSONArray q = new JSONArray();
 		q.put(Query.QueryType.CONTINUE.getNumber());
 		sendQueryArray(q, token);
 		try {
 	        return recv_raw();
-	    } catch (IOException ex) { 
+		} catch (IOException ex) {
 			throw new RqlDriverException(ex.getMessage());
 		}
 	}
-	
+
 	/* Utility functions to make a pretty API */
-	public RqlQuery.Table table(Object... args) { 
+	public RqlQuery.Table table(Object... args) {
 		RqlQuery.Table rvalue =  new RqlQuery.Table(args);
-		return rvalue; 
+		return rvalue;
 	}
-	
+
 	public RqlTopLevelQuery.DB db(Object... args) {
 		RqlTopLevelQuery.DB rvalue = new RqlTopLevelQuery.DB(args);
 		return rvalue;
 	}
-	
-	public RqlTopLevelQuery.DbCreate db_create(Object... args) { 
+
+	public RqlTopLevelQuery.DbCreate db_create(Object... args) {
 		RqlTopLevelQuery.DbCreate rvalue = new RqlTopLevelQuery.DbCreate(args);
 		return rvalue;
 	}
-	
-	public RqlTopLevelQuery.DbDrop db_drop(Object... args) { 
+
+	public RqlTopLevelQuery.DbDrop db_drop(Object... args) {
 		RqlTopLevelQuery.DbDrop rvalue = new RqlTopLevelQuery.DbDrop(args);
 		return rvalue;
 	}
-	
+
 	public RqlTopLevelQuery.DbList db_list(Object... args) {
 		RqlTopLevelQuery.DbList rvalue = new RqlTopLevelQuery.DbList(args);
 		return rvalue;
@@ -186,16 +187,16 @@ public class RqlConnection {
 		RqlTopLevelQuery.Branch rvalue = new RqlTopLevelQuery.Branch(args);
 		return rvalue;
 	}
-		
-	/* Private methods */ 
-	private void reconnect() throws RqlDriverException{ 
+
+	/* Private methods */
+	private void reconnect() throws RqlDriverException {
 		try {
 			if( _connected ) {
 				_sc.close();
 			}
 			_sc = SocketChannel.open();
-			// Disable Nagle's algorithm for better performance 
-		    _sc.setOption(StandardSocketOptions.TCP_NODELAY, true);
+			// Disable Nagle's algorithm for better performance
+			_sc.setOption(StandardSocketOptions.TCP_NODELAY, true);
 			_sc.configureBlocking( true );
 			_sc.connect(new InetSocketAddress(_hostname,_port));
 
@@ -217,7 +218,7 @@ public class RqlConnection {
             buffer.putInt(com.rethinkdb.Ql2.VersionDummy.Protocol.JSON_VALUE);
 
 			buffer.flip();
-			while(buffer.hasRemaining()) { 
+			while (buffer.hasRemaining()) {
 				_sc.write(buffer);
 			}
 
@@ -230,25 +231,25 @@ public class RqlConnection {
             }
 
 			_connected = true;
-		} catch (IOException ex) { 
-			throw new RqlDriverException(ex.getMessage());				
+		} catch (IOException ex) {
+			throw new RqlDriverException(ex.getMessage());
 		}
 
 	}
 
-	public long nextToken() { 
+	public long nextToken() {
 		return counter.incrementAndGet();
 	}
-	
-	public void send_raw( byte[] data ) throws IOException { 
-		rethink_send(_sc,data); 
+
+	public void send_raw(byte[] data) throws IOException {
+		rethink_send(_sc, data);
 	}
 
-	public Response recv_raw() throws IOException { 
-		return rethink_recv(_sc); 
+	public Response recv_raw() throws IOException {
+		return rethink_recv(_sc);
 	}
-	
-	public static RqlConnection connect(String hostname, int port) throws RqlDriverException { 
+
+	public static RqlConnection connect(String hostname, int port) throws RqlDriverException {
 		return connect2(hostname,port,null);
 	}
 
@@ -270,16 +271,16 @@ public class RqlConnection {
 	public static void rethink_send(SocketChannel sc, byte[] data) throws IOException {
 		ByteBuffer buffer = ByteBuffer.wrap(data);
 
-		while(buffer.hasRemaining()) { 
-			sc.write(buffer); 
+		while (buffer.hasRemaining()) {
+			sc.write(buffer);
 		}
 	}
 
 	public static Response rethink_recv(SocketChannel sc) throws IOException {
-		ByteBuffer header = ByteBuffer.allocate(8 + 4); 
+		ByteBuffer header = ByteBuffer.allocate(8 + 4);
 		header.order(ByteOrder.LITTLE_ENDIAN);
 		int bytesRead = 0;
-		while( bytesRead != 8 + 4 ){ 
+		while (bytesRead != 8 + 4) {
 			 bytesRead += sc.read(header);
 		}
 		header.flip();
@@ -288,8 +289,8 @@ public class RqlConnection {
 
 		ByteBuffer buf = ByteBuffer.allocate(len);
 		bytesRead = 0;
-		while( bytesRead != len ){ 
-			 bytesRead += sc.read(buf);		
+		while (bytesRead != len) {
+			bytesRead += sc.read(buf);
 		}
 		buf.flip();
 		return new Response(token, buf.array());

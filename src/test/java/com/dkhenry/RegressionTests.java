@@ -1,9 +1,9 @@
 package com.dkhenry;
 
-import com.dkhenry.RethinkDB.RqlConnection;
-import com.dkhenry.RethinkDB.RqlCursor;
-import com.dkhenry.RethinkDB.RqlObject;
-import com.dkhenry.RethinkDB.errors.RqlDriverException;
+import com.rethinkdb.RqlConnection;
+import com.rethinkdb.RqlCursor;
+import com.rethinkdb.RqlObject;
+import com.rethinkdb.errors.RqlDriverException;
 import org.testng.annotations.Test;
 
 import java.math.BigInteger;

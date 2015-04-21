@@ -1,4 +1,4 @@
-package com.dkhenry.RethinkDB;
+package com.rethinkdb;
 
 import java.lang.reflect.Constructor;
 import java.util.*;
@@ -74,8 +74,8 @@ abstract public class RqlQuery {
             return null;
         }
     }
-	
-	public RqlQuery optargs(HashMap<String,Object> args) { 
+
+	public RqlQuery optargs(HashMap<String, Object> args) {
 		_optargs.putAll(args);
 		return this;
 	}
@@ -222,7 +222,7 @@ abstract public class RqlQuery {
 	public RqlMethodQuery.IsEmpty is_empty(Object ...args) {
 		return prepend_construct(args,RqlMethodQuery.IsEmpty.class);
 	}
-	
+
 	public RqlQuery.Count count(Object ...args) {
 		return prepend_construct(args,RqlQuery.Count.class);
 	}
@@ -289,7 +289,7 @@ abstract public class RqlQuery {
 
 	/*
 	 * Note: The following are supposed to be able to use functions
-	 * I don't know exactly how to handle this and just want to get 
+	 * I don't know exactly how to handle this and just want to get
 	 * some of this functionality in place before I make it all perty
 	 */
 
@@ -324,11 +324,11 @@ abstract public class RqlQuery {
 	public RqlMethodQuery.ForEach for_each(Object ...args) {
 		return prepend_construct(args,RqlMethodQuery.ForEach.class);
 	}
-	
+
 	public RqlMethodQuery.Min min(Object ...args) {
 		return prepend_construct(args, RqlMethodQuery.Min.class);
 	}
-	
+
 	public RqlMethodQuery.Max max(Object ...args) {
 		return prepend_construct(args, RqlMethodQuery.Max.class);
 	}
@@ -385,7 +385,7 @@ abstract public class RqlQuery {
 
 		@Override
 		public Object build() {
-			return com.dkhenry.RethinkDB.Datum.datum(_data);
+			return com.rethinkdb.Datum.datum(_data);
 		}
 	}
 
@@ -565,9 +565,10 @@ abstract public class RqlQuery {
 			return Term.TermType.FUNC;
 		}
 	}
-	
-    public static class Split extends RqlQuery {
-        public Split(Object ...args) {
+
+	public static class Split extends RqlQuery {
+
+		public Split(Object ...args) {
                 construct(args);
         }
 
@@ -576,9 +577,10 @@ abstract public class RqlQuery {
                 return Term.TermType.SPLIT;
         }
     }
-    
-    public static class Random extends RqlQuery {
-        public Random(Object ...args) {
+
+	public static class Random extends RqlQuery {
+
+		public Random(Object ...args) {
                 construct(args);
         }
 
@@ -587,9 +589,10 @@ abstract public class RqlQuery {
                 return Term.TermType.RANDOM;
         }
     }
-    
-    public static class ObjectType extends RqlQuery {
-        public ObjectType(Object ...args) {
+
+	public static class ObjectType extends RqlQuery {
+
+		public ObjectType(Object ...args) {
                 construct(args);
         }
 
@@ -598,9 +601,10 @@ abstract public class RqlQuery {
                 return Term.TermType.OBJECT;
         }
     }
-    
-    public static class Count extends RqlQuery {
-        public Count(Object ...args) {
+
+	public static class Count extends RqlQuery {
+
+		public Count(Object ...args) {
                 construct(args);
         }
 
@@ -608,5 +612,5 @@ abstract public class RqlQuery {
         protected TermType tt() {
                 return Term.TermType.COUNT;
         }
-    }    
+	}
 }

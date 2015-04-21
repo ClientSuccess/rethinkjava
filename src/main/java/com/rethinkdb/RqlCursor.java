@@ -1,35 +1,35 @@
-package com.dkhenry.RethinkDB;
+package com.rethinkdb;
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-import com.dkhenry.RethinkDB.errors.RqlDriverException;
-import com.dkhenry.RethinkDB.Response;
+import com.rethinkdb.errors.RqlDriverException;
+import com.rethinkdb.Response;
 
 public class RqlCursor implements Iterable<RqlObject>, Iterator<RqlObject> {
-	
+
 	private RqlConnection _connection;
-	private Response _response; 
-	private int _index; 
-	
-	public String toString() { 
+	private Response _response;
+	private int _index;
+
+	public String toString() {
 		return _response.toString();
 	}
-	
+
 	public RqlCursor(RqlConnection conn) {
 		_connection = conn;
 		_index = 0;
 	}
-	
+
 	public RqlCursor(RqlConnection conn, Response rsp) {
 		_connection = conn;
-		_response = rsp; 
+		_response = rsp;
 		_index = 0;
 	}
-	
+
 	@Override
 	public Iterator<RqlObject> iterator() {
-		return this; 		
+		return this;
 	}
 
 	@Override
@@ -47,27 +47,27 @@ public class RqlCursor implements Iterable<RqlObject>, Iterator<RqlObject> {
 		}
 		return false;
 	}
-   
+
 	@Override
 	public RqlObject next() {
-		if( _index < _response.getResponseCount()) { 
+		if (_index < _response.getResponseCount()) {
 			return new RqlObject(_response.getResponse(_index++));
-		} else if( _response.getType() == com.rethinkdb.Ql2.Response.ResponseType.SUCCESS_PARTIAL){ 			
+		} else if (_response.getType() == com.rethinkdb.Ql2.Response.ResponseType.SUCCESS_PARTIAL) {
 			try {
 				_response = _connection.get_more(_response.getToken());
 				_index = 0;
 				return next();
 			} catch (RqlDriverException e) {
 				throw new NoSuchElementException(e.getMessage());
-			}			
-			
+			}
+
 		}
-		throw new NoSuchElementException("The RqlCursor has no more elements");		
+		throw new NoSuchElementException("The RqlCursor has no more elements");
 	}
 
 	@Override
 	public void remove() {
-		throw new UnsupportedOperationException("Removing rows from a RqlCursor is not currently supported");		
+		throw new UnsupportedOperationException("Removing rows from a RqlCursor is not currently supported");
 	}
 
 }

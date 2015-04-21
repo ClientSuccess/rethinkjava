@@ -1,5 +1,7 @@
 package com.dkhenry;
 
+import com.rethinkdb.RqlConnection;
+import com.rethinkdb.RqlCursor;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
@@ -10,8 +12,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Random;
 
-import com.dkhenry.RethinkDB.*; 
-import com.dkhenry.RethinkDB.errors.RqlDriverException;
+import com.dkhenry.RethinkDB.*;
+import com.rethinkdb.errors.RqlDriverException;
 
 public class SpeedTest {
 	public static String randomString(Random rng, String characters, int length)
@@ -23,7 +25,7 @@ public class SpeedTest {
 	    }
 	    return new String(text);
 	}
-		
+
 	@DataProvider(name="insertSizeCounters")
 	public Iterator<Object[]> termTypes() {
 		ArrayList<Object[]> counts = new ArrayList<Object[]>();
@@ -32,10 +34,10 @@ public class SpeedTest {
 		}
 		return counts.iterator();
 	}
-	
+
 	@SuppressWarnings("serial")
 	@Test(dataProvider="insertSizeCounters", groups = { "benchmark" })
-	public void smallInserts(int count) throws RqlDriverException { 
+	public void smallInserts(int count) throws RqlDriverException {
 		SecureRandom random = new SecureRandom();
 		String database = new BigInteger(130, random).toString(32);
 		String table = new BigInteger(130, random).toString(32);
@@ -58,14 +60,14 @@ public class SpeedTest {
 			long end = System.nanoTime();
 			System.out.println("Insert of " + count + " rows took " + (end-start)/1000000000.0 + "s");
 			assert Double.valueOf(count).equals(cursor.next().getAs("inserted")): "Wrong number of rows inserted";
-		} catch (RqlDriverException ex) { 
+		} catch (RqlDriverException ex) {
 			System.out.println(ex.getMessage());
 			throw ex;
 		}
-								
-		r.run(r.db(database).table_drop(table));				
-		r.run(r.db_drop(database)); 
+
+		r.run(r.db(database).table_drop(table));
+		r.run(r.db_drop(database));
 		r.close();
-		
+
 	}
 }
